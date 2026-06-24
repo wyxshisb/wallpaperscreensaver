@@ -1,0 +1,70 @@
+{
+  "name": "wallpaper-screensaver",
+  "version": "3.0.0",
+  "description": "Wallpaper Screensaver - 闲置时全屏展示壁纸与数字时钟",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "vite build && electron-builder"
+  },
+  "keywords": ["wallpaper", "screensaver", "clock", "electron"],
+  "author": "WallpaperScreensaver",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "electron-store": "^11.0.2",
+    "lunar-javascript": "^1.7.7",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.2",
+    "concurrently": "^10.0.3",
+    "electron": "^42.4.1",
+    "electron-builder": "^26.15.3",
+    "vite": "^8.0.16",
+    "wait-on": "^9.0.10"
+  },
+  "build": {
+    "appId": "com.wallpaper-screensaver.app",
+    "productName": "WallpaperScreensaver",
+    "copyright": "Copyright 2025 WallpaperScreensaver",
+    "directories": {
+        "output": "dist-installer-new"
+      },
+    "files": [
+      "dist/**/*",
+      "main.js",
+      "preload.js",
+      "tutorial.html",
+      "src/main/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/icon.png",
+      "legalTrademarks": "Copyright 2025 WallpaperScreensaver",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Wallpaper Screensaver",
+      "deleteAppDataOnUninstall": true,
+      "include": "build/installer.nsh",
+      "installerLanguages": [
+        "en_US"
+      ],
+      "language": "1033",
+      "runAfterFinish": false,
+      "artifactName": "WallpaperScreensaver-Setup-${version}.${ext}"
+    }
+  }
+}
