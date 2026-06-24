@@ -1,0 +1,587 @@
+.screensaver-app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  cursor: none;
+  user-select: none;
+}
+
+.screensaver-empty {
+  background: #000;
+}
+
+/* ========== Wallpaper Layer ========== */
+.wallpaper-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.wallpaper-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 1s ease-in-out;
+}
+
+/* ========== Ken Burns 效果 ========== */
+.wallpaper-img.ken-burns {
+  will-change: transform;
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(var(--kb-sx, 1.08)) translate(var(--kb-tx, 0%), var(--kb-ty, 0%));
+  }
+  100% {
+    transform: scale(var(--kb-ex, 1.15)) translate(var(--kb-ttx, -3%), var(--kb-tty, -3%));
+  }
+}
+
+.wallpaper-img.visible {
+  opacity: 1;
+}
+
+.wallpaper-img.hidden {
+  opacity: 0;
+}
+
+/* Image fit modes */
+.wallpaper-img.fit-contain {
+  object-fit: contain;
+}
+
+.wallpaper-img.fit-stretch {
+  object-fit: fill;
+}
+
+/* ========== Transition: Zoom ========== */
+.transition-zoom .wallpaper-img.visible {
+  animation: zoomIn 1s ease-in-out forwards;
+}
+
+.transition-zoom .wallpaper-img.hidden {
+  animation: zoomOut 1s ease-in-out forwards;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes zoomOut {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.1); opacity: 0; }
+}
+
+/* ========== Transition: Slide ========== */
+.transition-slide .wallpaper-img.visible {
+  animation: slideIn 1s ease-in-out forwards;
+}
+
+.transition-slide .wallpaper-img.hidden {
+  animation: slideOut 1s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0; }
+}
+
+/* ========== Transition: Blur ========== */
+.transition-blur .wallpaper-img.visible {
+  animation: blurIn 1s ease-in-out forwards;
+}
+
+.transition-blur .wallpaper-img.hidden {
+  animation: blurOut 1s ease-in-out forwards;
+}
+
+@keyframes blurIn {
+  from { filter: blur(20px); opacity: 0; }
+  to { filter: blur(0); opacity: 1; }
+}
+
+@keyframes blurOut {
+  from { filter: blur(0); opacity: 1; }
+  to { filter: blur(20px); opacity: 0; }
+}
+
+/* ========== Wallpaper Filters ========== */
+.wallpaper-layer.filter-dim {
+  filter: brightness(var(--filter-value, 0.7));
+}
+
+.wallpaper-layer.filter-blur {
+  filter: blur(var(--filter-value, 10px));
+}
+
+.wallpaper-layer.filter-grayscale {
+  filter: grayscale(var(--filter-value, 1));
+}
+
+.wallpaper-layer.filter-sepia {
+  filter: sepia(var(--filter-value, 0.7));
+}
+
+.wallpaper-layer.filter-saturate {
+  filter: saturate(var(--filter-value, 1.8));
+}
+
+.wallpaper-layer.filter-contrast {
+  filter: contrast(var(--filter-value, 1.5)) brightness(var(--filter-brightness, 0.9));
+}
+
+.wallpaper-layer.filter-cool {
+  filter: hue-rotate(var(--filter-value, 20deg)) saturate(var(--filter-sat, 0.9)) brightness(var(--filter-bright, 0.95));
+}
+
+.wallpaper-layer.filter-warm {
+  filter: hue-rotate(var(--filter-value, -15deg)) saturate(var(--filter-sat, 1.1)) brightness(var(--filter-bright, 1.05));
+}
+
+.wallpaper-layer.filter-invert {
+  filter: invert(var(--filter-value, 0.85)) hue-rotate(180deg);
+}
+
+.wallpaper-layer.filter-vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, var(--vignette-color, rgba(0, 0, 0, 0.4)) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wallpaper-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========== Clock Layer ========== */
+.clock-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.clock-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 60px;
+  border-radius: 24px;
+  pointer-events: auto;
+  cursor: none;
+  transition: border-radius 0.4s ease, background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+}
+
+.clock-container.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+/* ========== Clock Alignment ========== */
+.clock-align-center {
+  align-items: center;
+  text-align: center;
+}
+
+.clock-align-left {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.clock-align-right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.clock-align-left .clock-time,
+.clock-align-left .clock-date,
+.clock-align-left .clock-lunar,
+.clock-align-left .clock-weather,
+.clock-align-left .clock-quote,
+.clock-align-left .clock-battery {
+  text-align: left;
+}
+
+.clock-align-right .clock-time,
+.clock-align-right .clock-date,
+.clock-align-right .clock-lunar,
+.clock-align-right .clock-weather,
+.clock-align-right .clock-quote,
+.clock-align-right .clock-battery {
+  text-align: right;
+}
+
+.clock-align-left .clock-weather,
+.clock-align-left .clock-battery {
+  justify-content: flex-start;
+}
+
+.clock-align-right .clock-weather,
+.clock-align-right .clock-battery {
+  justify-content: flex-end;
+}
+
+.clock-align-left .info-separator {
+  margin-left: 0;
+}
+
+.clock-align-right .info-separator {
+  margin-right: 0;
+}
+
+/* ========== Clock Style: glass (default) ========== */
+.clock-container.clock-style-glass {
+  background: var(--glass-bg, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(var(--glass-blur, 24px)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 24px)) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ========== Clock Style: solid ========== */
+.clock-container.clock-style-solid {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.clock-container.clock-style-solid .clock-time,
+.clock-container.clock-style-solid .clock-date,
+.clock-container.clock-style-solid .clock-lunar,
+.clock-container.clock-style-solid .clock-weather,
+.clock-container.clock-style-solid .clock-quote,
+.clock-container.clock-style-solid .clock-battery {
+  text-shadow:
+    0 0 10px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ========== Clock Style: hollow (镂空) ========== */
+.clock-container.clock-style-hollow {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+}
+
+.clock-container.clock-style-hollow .clock-time {
+  color: transparent !important;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.85);
+  text-shadow:
+    0 0 30px rgba(255, 255, 255, 0.15),
+    0 0 60px rgba(255, 255, 255, 0.08);
+}
+
+.clock-container.clock-style-hollow .clock-date {
+  color: transparent !important;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.clock-container.clock-style-hollow .clock-lunar,
+.clock-container.clock-style-hollow .clock-weather,
+.clock-container.clock-style-hollow .clock-quote,
+.clock-container.clock-style-hollow .clock-battery {
+  color: rgba(255, 255, 255, 0.6) !important;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* ========== Clock Style: liquid (液态玻璃) ========== */
+.clock-container.clock-style-liquid {
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg-1, rgba(255, 255, 255, 0.12)) 0%,
+    var(--glass-bg-2, rgba(255, 255, 255, 0.04)) 40%,
+    var(--glass-bg-3, rgba(255, 255, 255, 0.1)) 60%,
+    var(--glass-bg-4, rgba(255, 255, 255, 0.02)) 100%
+  );
+  backdrop-filter: blur(var(--glass-blur, 30px)) saturate(1.8) brightness(1.1);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 30px)) saturate(1.8) brightness(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.clock-container.clock-style-liquid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.clock-container.clock-style-liquid .clock-time,
+.clock-container.clock-style-liquid .clock-date {
+  text-shadow:
+    0 0 20px rgba(255, 255, 255, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ========== Clock Style: minimal (极简) ========== */
+.clock-container.clock-style-minimal {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  padding: 20px 40px;
+}
+
+.clock-container.clock-style-minimal .clock-time {
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+}
+
+.clock-container.clock-style-minimal .clock-date {
+  font-weight: 300;
+  font-size: 22px;
+  letter-spacing: 0.2em;
+  opacity: 0.7;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* ========== Clock Style: outline (描边) ========== */
+.clock-container.clock-style-outline {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.05),
+    inset 0 0 20px rgba(255, 255, 255, 0.03);
+}
+
+.clock-container.clock-style-outline .clock-time,
+.clock-container.clock-style-outline .clock-date {
+  text-shadow:
+    0 0 15px rgba(255, 255, 255, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ========== Clock Style: neon (霓虹) ========== */
+.clock-container.clock-style-neon {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(calc(var(--glass-blur, 24px) * 0.3));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur, 24px) * 0.3));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 15px rgba(255, 255, 255, 0.08),
+    0 0 30px rgba(255, 255, 255, 0.04);
+}
+
+.clock-container.clock-style-neon .clock-time {
+  text-shadow:
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor,
+    0 0 80px currentColor;
+}
+
+.clock-container.clock-style-neon .clock-date {
+  text-shadow:
+    0 0 8px currentColor,
+    0 0 16px currentColor,
+    0 0 32px currentColor;
+}
+
+.clock-container.clock-style-neon .clock-lunar,
+.clock-container.clock-style-neon .clock-weather,
+.clock-container.clock-style-neon .clock-quote,
+.clock-container.clock-style-neon .clock-battery {
+  text-shadow:
+    0 0 6px currentColor,
+    0 0 12px currentColor;
+}
+
+/* ========== Clock Text ========== */
+.clock-time {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-align: center;
+  width: 100%;
+  text-shadow:
+    0 0 20px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Font presets */
+.clock-time.font-serif {
+  font-family: Georgia, 'Noto Serif SC', 'SimSun', 'Microsoft YaHei', serif;
+}
+
+.clock-time.font-mono {
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', 'Courier New', 'Microsoft YaHei', monospace;
+}
+
+.clock-time.font-elegant {
+  font-family: 'Playfair Display', Georgia, 'Noto Serif SC', 'Microsoft YaHei', serif;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.clock-date {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  margin-top: 16px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  width: 100%;
+  text-shadow:
+    0 0 15px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.clock-date.font-serif {
+  font-family: Georgia, 'Noto Serif SC', 'SimSun', 'Microsoft YaHei', serif;
+}
+
+.clock-date.font-mono {
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', 'Courier New', 'Microsoft YaHei', monospace;
+}
+
+.clock-date.font-elegant {
+  font-family: 'Playfair Display', Georgia, 'Noto Serif SC', 'Microsoft YaHei', serif;
+  font-weight: 400;
+}
+
+/* ========== Info Sections ========== */
+.clock-lunar {
+  font-size: 20px;
+  margin-top: 8px;
+  opacity: 0.85;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.clock-weather {
+  font-size: 20px;
+  margin-top: 8px;
+  opacity: 0.85;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clock-quote {
+  font-size: 16px;
+  font-style: italic;
+  margin-top: 16px;
+  opacity: 0.7;
+  max-width: 400px;
+  text-align: center;
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.clock-battery {
+  font-size: 16px;
+  margin-top: 12px;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.info-separator {
+  width: 40px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 12px auto 0;
+}
+
+/* ========== Countdown ========== */
+.clock-countdowns {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.clock-countdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 18px;
+  opacity: 0.85;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.clock-countdown-item.today {
+  animation: countdownPulse 2s ease-in-out infinite;
+}
+
+@keyframes countdownPulse {
+  0%, 100% { opacity: 0.85; text-shadow: 0 0 8px currentColor, 0 1px 4px rgba(0, 0, 0, 0.4); }
+  50% { opacity: 1; text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 1px 4px rgba(0, 0, 0, 0.4); }
+}
+
+.clock-countdown-name {
+  font-weight: 600;
+}
+
+.clock-countdown-days {
+  opacity: 0.8;
+  font-size: 16px;
+}
+
+.clock-align-left .clock-countdowns {
+  align-items: flex-start;
+}
+
+.clock-align-left .clock-countdown-item {
+  justify-content: flex-start;
+}
+
+.clock-align-right .clock-countdowns {
+  align-items: flex-end;
+}
+
+.clock-align-right .clock-countdown-item {
+  justify-content: flex-end;
+}

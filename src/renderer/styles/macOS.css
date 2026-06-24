@@ -1,0 +1,1517 @@
+/* ========== macOS 风格基础样式 ========== */
+
+:root {
+  --macos-bg: #f5f5f7;
+  --macos-sidebar-bg: rgba(246, 246, 246, 0.85);
+  --macos-card-bg: #ffffff;
+  --macos-text: #1d1d1f;
+  --macos-text-secondary: #86868b;
+  --macos-accent: #007aff;
+  --macos-accent-hover: #0062d6;
+  --macos-toggle-active: #34c759;
+  --macos-border: rgba(0, 0, 0, 0.08);
+  --macos-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --macos-radius: 10px;
+  --macos-radius-sm: 6px;
+  --macos-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ========== 启动动画 ========== */
+
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.4s ease;
+}
+
+.splash-fade-out {
+  opacity: 0;
+}
+
+.splash-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: splashPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes splashPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.splash-title {
+  font-family: var(--macos-font);
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.splash-loading {
+  width: 120px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.splash-loading-bar {
+  width: 40%;
+  height: 100%;
+  background: var(--macos-accent);
+  border-radius: 2px;
+  animation: splashLoading 1s ease-in-out infinite;
+}
+
+@keyframes splashLoading {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* ========== 设置主布局 ========== */
+
+.settings-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: var(--macos-font);
+  background: var(--macos-bg);
+  color: var(--macos-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ========== 自定义标题栏 ========== */
+
+.settings-titlebar {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  background: rgba(246, 246, 246, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid var(--macos-border);
+  flex-shrink: 0;
+  -webkit-app-region: drag;
+}
+
+.settings-titlebar-drag {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+}
+
+.settings-titlebar-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--macos-text);
+  opacity: 0.8;
+}
+
+.settings-titlebar-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: transparent;
+  transition: color 0.15s;
+}
+
+.titlebar-btn-minimize {
+  background: #f5c518;
+}
+
+.titlebar-btn-minimize:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.titlebar-btn-close {
+  background: #ff5f57;
+}
+
+.titlebar-btn-close:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* ========== 设置主体 ========== */
+
+.settings-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.settings-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ========== 面板切换动画 ========== */
+
+.panel-animate {
+  animation: panelFadeIn 0.25s ease-out;
+}
+
+@keyframes panelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== 侧边栏 ========== */
+
+.settings-sidebar {
+  width: 200px;
+  min-width: 200px;
+  height: 100%;
+  background: var(--macos-sidebar-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-right: 0.5px solid var(--macos-border);
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: var(--macos-radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--macos-text);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  letter-spacing: -0.01em;
+}
+
+.sidebar-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-item.active {
+  background: var(--macos-accent);
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.sidebar-item .sidebar-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+/* ========== 内容区 ========== */
+
+.settings-content {
+  flex: 1;
+  padding: 28px 32px;
+  overflow-y: auto;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.settings-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.settings-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.settings-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.settings-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.settings-panel-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  color: var(--macos-text);
+}
+
+/* ========== 设置卡片 ========== */
+
+.settings-card {
+  background: var(--macos-card-bg);
+  border-radius: var(--macos-radius);
+  box-shadow: var(--macos-shadow);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  min-height: 34px;
+}
+
+.settings-row + .settings-row {
+  border-top: 0.5px solid var(--macos-border);
+}
+
+.settings-row-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--macos-text);
+}
+
+.settings-row-sublabel {
+  font-size: 11px;
+  color: var(--macos-text-secondary);
+  margin-top: 2px;
+}
+
+.settings-row-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== macOS Toggle Switch ========== */
+
+.macos-toggle {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.macos-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.macos-toggle-track {
+  position: absolute;
+  inset: 0;
+  background: rgba(120, 120, 128, 0.32);
+  border-radius: 11px;
+  transition: background 0.25s ease;
+}
+
+.macos-toggle input:checked + .macos-toggle-track {
+  background: var(--macos-toggle-active);
+}
+
+.macos-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+
+.macos-toggle input:checked ~ .macos-toggle-thumb {
+  transform: translateX(16px);
+}
+
+/* ========== macOS Segmented Control ========== */
+
+.macos-segmented {
+  display: inline-flex;
+  background: rgba(120, 120, 128, 0.12);
+  border-radius: var(--macos-radius-sm);
+  padding: 2px;
+  gap: 0;
+}
+
+.macos-segmented-btn {
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--macos-font);
+  color: var(--macos-text);
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--macos-radius-sm) - 2px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.macos-segmented-btn.active {
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0.5px 1px rgba(0, 0, 0, 0.04);
+  color: var(--macos-text);
+}
+
+.macos-segmented-btn:not(.active):hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* 4段 segmented control */
+.macos-segmented-4 .macos-segmented-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+}
+
+/* 3段 segmented control */
+.macos-segmented-3 .macos-segmented-btn {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+/* ========== macOS 滑块 ========== */
+
+.macos-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.macos-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 160px;
+  height: 4px;
+  background: rgba(120, 120, 128, 0.16);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.macos-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.2), 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.macos-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0.5px 4px rgba(0, 0, 0, 0.25), 0 0 0 0.5px rgba(0, 0, 0, 0.1);
+}
+
+.macos-slider::-webkit-slider-thumb:active {
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2), 0 0.5px 2px rgba(0, 0, 0, 0.2);
+}
+
+.macos-slider-value {
+  font-size: 12px;
+  color: var(--macos-text-secondary);
+  min-width: 32px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ========== macOS 输入框 ========== */
+
+.macos-input {
+  font-family: var(--macos-font);
+  font-size: 13px;
+  padding: 5px 10px;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--macos-radius-sm);
+  background: #ffffff;
+  color: var(--macos-text);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.macos-input:focus {
+  border-color: var(--macos-accent);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+.macos-input[type="number"] {
+  width: 60px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.macos-input[type="number"]::-webkit-inner-spin-button,
+.macos-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ========== macOS 按钮 ========== */
+
+.macos-btn {
+  font-family: var(--macos-font);
+  font-size: 13px;
+  font-weight: 400;
+  padding: 5px 14px;
+  border: none;
+  border-radius: var(--macos-radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: -0.01em;
+}
+
+.macos-btn-primary {
+  background: var(--macos-accent);
+  color: #ffffff;
+}
+
+.macos-btn-primary:hover {
+  background: var(--macos-accent-hover);
+}
+
+.macos-btn-primary:active {
+  background: #0050b3;
+}
+
+.macos-btn-secondary {
+  background: rgba(120, 120, 128, 0.12);
+  color: var(--macos-accent);
+}
+
+.macos-btn-secondary:hover {
+  background: rgba(120, 120, 128, 0.18);
+}
+
+/* ========== 路径显示 ========== */
+
+.path-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(120, 120, 128, 0.06);
+  border-radius: var(--macos-radius-sm);
+  font-size: 12px;
+  color: var(--macos-text-secondary);
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.path-display.has-path {
+  color: var(--macos-text);
+}
+
+/* ========== 颜色选择器 ========== */
+
+.macos-color-picker {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.macos-color-picker input[type="color"] {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.macos-color-picker-swatch {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* ========== 欢迎对话框 ========== */
+
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.welcome-dialog {
+  background: var(--macos-card-bg);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+  padding: 36px 40px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.welcome-dialog h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.welcome-dialog p {
+  font-size: 13px;
+  color: var(--macos-text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.welcome-dialog .macos-btn {
+  padding: 8px 24px;
+  font-size: 14px;
+}
+
+.welcome-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ========== 输入组合 ========== */
+
+.macos-input-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.macos-input-group .input-suffix {
+  font-size: 12px;
+  color: var(--macos-text-secondary);
+}
+
+/* ========== 预览区域 ========== */
+
+.settings-preview {
+  flex-shrink: 0;
+  padding: 16px 32px 20px;
+  border-top: 0.5px solid var(--macos-border);
+  background: var(--macos-bg);
+}
+
+.settings-preview-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--macos-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.preview-box {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--macos-radius);
+  overflow: hidden;
+  background: #1a1a1a;
+  box-shadow: var(--macos-shadow);
+  cursor: default;
+  /* aspect-ratio will be overridden by inline style from JS */
+}
+
+/* Virtual screen: rendered at actual resolution, scaled down to fit preview */
+.preview-virtual-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  /* scale factor is set dynamically via JS */
+}
+
+/* Clock container in preview: enable pointer events for dragging */
+.preview-box .clock-container {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.preview-box .clock-container.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.preview-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-empty-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ========== 文件标签 ========== */
+
+.file-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 0 4px;
+}
+
+.file-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgba(120, 120, 128, 0.1);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--macos-text);
+  max-width: 200px;
+}
+
+.file-tag-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-tag-remove {
+  background: none;
+  border: none;
+  color: var(--macos-text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+  flex-shrink: 0;
+}
+
+.file-tag-remove:hover {
+  color: #ff3b30;
+}
+
+/* ========== 倒计时列表 ========== */
+
+.countdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.countdown-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(120, 120, 128, 0.08);
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.countdown-list-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.countdown-list-name {
+  font-weight: 500;
+  color: var(--macos-text);
+  flex: 1;
+}
+
+.countdown-list-date {
+  color: var(--macos-text-secondary);
+  font-size: 12px;
+}
+
+.countdown-list-delete {
+  background: none;
+  border: none;
+  color: var(--macos-text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.countdown-list-delete:hover {
+  color: #ff3b30;
+  background: rgba(255, 59, 48, 0.1);
+}
+
+/* ========== 自定义名言列表 ========== */
+
+.quote-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.quote-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(120, 120, 128, 0.08);
+  border-radius: 8px;
+}
+
+.quote-list-text {
+  flex: 1;
+  font-size: 13px;
+  color: var(--macos-text);
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quote-list-delete {
+  background: none;
+  border: none;
+  color: var(--macos-text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.quote-list-delete:hover {
+  color: #ff3b30;
+  background: rgba(255, 59, 48, 0.1);
+}
+
+/* ========== 预设主题卡片 ========== */
+
+.preset-tier {
+  margin-bottom: 16px;
+}
+
+.preset-tier:last-child {
+  margin-bottom: 0;
+}
+
+.preset-tier-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+
+.preset-tier-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--macos-text);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.preset-tier-hint {
+  font-size: 10px;
+  color: var(--macos-text-secondary);
+  opacity: 0.7;
+}
+
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.preset-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--macos-card-bg);
+  border-radius: var(--macos-radius);
+  box-shadow: var(--macos-shadow);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, outline-color 0.15s ease;
+  border: none;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  padding: 0;
+  text-align: left;
+}
+
+.preset-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.preset-card:active {
+  transform: translateY(0);
+}
+
+.preset-card.active {
+  outline-color: var(--macos-accent);
+  box-shadow: 0 0 0 1px var(--macos-accent), 0 4px 12px rgba(0, 122, 255, 0.15);
+}
+
+.preset-card-preview {
+  height: 64px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.preset-mini-screen {
+  position: absolute;
+  inset: 0;
+}
+
+.preset-mini-clock {
+  position: absolute;
+  border-radius: 4px;
+}
+
+/* ── 轻量组 ── */
+
+/* Swiss: top-left minimal — international typographic style */
+.preset-mini-swiss .preset-mini-clock {
+  top: 10px;
+  left: 10px;
+  width: 38px;
+  height: 16px;
+  background: transparent;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-radius: 0;
+}
+
+.preset-mini-swiss {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%) !important;
+}
+
+/* Brutalist: center solid — raw concrete */
+.preset-mini-brutalist .preset-mini-clock {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 24px;
+  background: rgba(20, 20, 20, 0.7);
+  border: 1px solid rgba(224, 224, 224, 0.15);
+  border-radius: 0;
+}
+
+.preset-mini-brutalist {
+  background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 50%, #1a1a1a 100%) !important;
+}
+
+/* Stencil: center hollow — industrial cutout */
+.preset-mini-stencil .preset-mini-clock {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 22px;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  background: transparent;
+  border-radius: 2px;
+}
+
+.preset-mini-stencil {
+  background: linear-gradient(135deg, #1a2a1a 0%, #2a3a2a 50%, #1a2a1a 100%) !important;
+}
+
+/* Bauhaus: center outline — primary color geometry */
+.preset-mini-bauhaus .preset-mini-clock {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 22px;
+  border: 2px solid rgba(255, 217, 61, 0.7);
+  background: transparent;
+  border-radius: 0;
+}
+
+.preset-mini-bauhaus {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a1a0a 50%, #1a0a0a 100%) !important;
+}
+
+/* ── 均衡组 ── */
+
+/* Noir: bottom-left solid — film noir credits */
+.preset-mini-noir .preset-mini-clock {
+  bottom: 8px;
+  left: 8px;
+  width: 48px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(240, 237, 229, 0.1);
+  border-radius: 3px;
+}
+
+.preset-mini-noir {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%) !important;
+}
+
+/* Letterpress: bottom-left solid — vintage print */
+.preset-mini-letterpress .preset-mini-clock {
+  bottom: 8px;
+  left: 8px;
+  width: 46px;
+  height: 20px;
+  background: rgba(30, 20, 10, 0.6);
+  border: 1px solid rgba(232, 213, 176, 0.15);
+  border-radius: 3px;
+}
+
+.preset-mini-letterpress {
+  background: linear-gradient(135deg, #2e1f0f 0%, #3e2a1a 50%, #2a1a0a 100%) !important;
+}
+
+/* Obelisk: center solid — monumental */
+.preset-mini-obelisk .preset-mini-clock {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 26px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1px;
+}
+
+.preset-mini-obelisk {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+}
+
+/* Parchment: top-left solid — classical manuscript */
+.preset-mini-parchment .preset-mini-clock {
+  top: 8px;
+  left: 8px;
+  width: 44px;
+  height: 18px;
+  background: rgba(30, 20, 10, 0.5);
+  border: 1px solid rgba(245, 230, 200, 0.12);
+  border-radius: 4px;
+}
+
+.preset-mini-parchment {
+  background: linear-gradient(135deg, #1e1a14 0%, #2a2418 50%, #1e1a14 100%) !important;
+}
+
+/* ── 华丽组 ── */
+
+/* Frosted: center glass — classic frosted glass */
+.preset-mini-frosted .preset-mini-clock {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 22px;
+  background: rgba(250, 250, 248, 0.1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+}
+
+.preset-mini-frosted {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+}
+
+/* Aurora: top-center liquid — northern lights */
+.preset-mini-aurora .preset-mini-clock {
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 20px;
+  background: linear-gradient(135deg, rgba(200, 255, 240, 0.14), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(200, 255, 240, 0.22);
+  border-radius: 7px;
+}
+
+.preset-mini-aurora {
+  background: linear-gradient(135deg, #0f0c29 0%, #1a3a4e 50%, #24243e 100%) !important;
+}
+
+/* Glacier: center liquid — icy prismatic */
+.preset-mini-glacier .preset-mini-clock {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 22px;
+  background: linear-gradient(135deg, rgba(224, 240, 255, 0.16), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(224, 240, 255, 0.25);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.preset-mini-glacier {
+  background: linear-gradient(135deg, #0a1a2e 0%, #0f2a3e 50%, #0a1e2e 100%) !important;
+}
+
+/* Synthwave: center neon — cyberpunk glow */
+.preset-mini-synthwave .preset-mini-clock {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 45, 149, 0.4);
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(255, 45, 149, 0.4), 0 0 16px rgba(255, 45, 149, 0.2);
+}
+
+.preset-mini-synthwave {
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a0a1e 50%, #0a0a28 100%) !important;
+}
+
+.preset-card-info {
+  padding: 8px 10px;
+}
+
+.preset-card-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--macos-text);
+  letter-spacing: -0.01em;
+}
+
+.preset-card-desc {
+  font-size: 10px;
+  color: var(--macos-text-secondary);
+  margin-top: 1px;
+  line-height: 1.3;
+}
+
+/* ========== 位置九宫格 ========== */
+
+.position-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  width: 120px;
+  height: 80px;
+  background: var(--macos-card-bg);
+  border-radius: var(--macos-radius);
+  padding: 4px;
+  box-shadow: var(--macos-shadow);
+}
+
+.position-cell {
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.position-cell:hover {
+  background: rgba(0, 122, 255, 0.1);
+}
+
+.position-cell.active {
+  background: rgba(0, 122, 255, 0.15);
+  border-color: var(--macos-accent);
+}
+
+.position-cell-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--macos-text-secondary);
+  opacity: 0.4;
+}
+
+.position-cell.active .position-cell-dot {
+  background: var(--macos-accent);
+  opacity: 1;
+}
+
+/* ========== 更新说明对话框 ========== */
+
+.update-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: update-fade-in 0.3s ease;
+}
+
+@keyframes update-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.update-dialog {
+  background: var(--macos-card-bg);
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  width: 420px;
+  max-height: 80vh;
+  overflow: hidden;
+  animation: update-slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes update-slide-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.update-header {
+  padding: 28px 28px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.update-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.update-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--macos-text);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.update-body {
+  padding: 20px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.update-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--macos-text);
+}
+
+.update-item-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  margin-top: 2px;
+}
+
+.update-item-feature .update-item-badge {
+  background: rgba(0, 122, 255, 0.12);
+  color: #007aff;
+}
+
+.update-item-fix .update-item-badge {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34c759;
+}
+
+.update-item-improve .update-item-badge {
+  background: rgba(255, 149, 0, 0.12);
+  color: #ff9500;
+}
+
+.update-item-text {
+  flex: 1;
+}
+
+.update-footer {
+  padding: 16px 28px 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.update-close-btn {
+  background: var(--macos-accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.update-close-btn:hover {
+  opacity: 0.9;
+}
+
+.update-close-btn:active {
+  transform: scale(0.97);
+}
+
+.update-countdown {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.7;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* ========== 滤镜卡片 ========== */
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.filter-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--macos-card-bg);
+  border-radius: var(--macos-radius);
+  box-shadow: var(--macos-shadow);
+  border: none;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  padding: 8px;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+  text-align: left;
+}
+
+.filter-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-card:active {
+  transform: translateY(0);
+}
+
+.filter-card.active {
+  outline-color: var(--macos-accent);
+  box-shadow: 0 0 0 1px var(--macos-accent), 0 3px 10px rgba(0, 122, 255, 0.12);
+}
+
+.filter-card-preview {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #e74c3c 0%, #f39c12 25%, #2ecc71 50%, #3498db 75%, #9b59b6 100%);
+  background-size: cover;
+}
+
+.filter-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.filter-card-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--macos-text);
+  letter-spacing: -0.01em;
+}
+
+.filter-card-desc {
+  font-size: 10px;
+  color: var(--macos-text-secondary);
+  margin-top: 1px;
+  line-height: 1.3;
+}
+
+/* ========== 关于信息 ========== */
+
+.about-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.about-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.about-label {
+  font-size: 13px;
+  color: var(--macos-text-secondary);
+}
+
+.about-value {
+  font-size: 13px;
+  color: var(--macos-text);
+  font-weight: 500;
+}
+
+/* ========== 更新记录 ========== */
+
+.changelog-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 4px;
+  cursor: pointer;
+  border-top: 1px solid var(--macos-border);
+  margin-top: 8px;
+}
+
+.changelog-toggle:hover .changelog-toggle-label {
+  color: var(--macos-accent);
+}
+
+.changelog-toggle-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--macos-text);
+  transition: color 0.15s ease;
+}
+
+.changelog-toggle-arrow {
+  font-size: 14px;
+  color: var(--macos-text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.changelog-toggle-arrow.open {
+  transform: rotate(90deg);
+}
+
+.changelog-list {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.changelog-version {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--macos-border);
+}
+
+.changelog-version:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.changelog-version-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--macos-text);
+  margin-bottom: 6px;
+}
+
+.changelog-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--macos-text);
+  padding: 2px 0;
+}
+
+.changelog-badge {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+  margin-top: 2px;
+}
+
+.changelog-item-feature .changelog-badge {
+  background: rgba(0, 122, 255, 0.1);
+  color: #007aff;
+}
+
+.changelog-item-fix .changelog-badge {
+  background: rgba(52, 199, 89, 0.1);
+  color: #34c759;
+}
+
+.changelog-item-improve .changelog-badge {
+  background: rgba(255, 149, 0, 0.1);
+  color: #ff9500;
+}
+
+.changelog-text {
+  flex: 1;
+}
